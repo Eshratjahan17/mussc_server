@@ -1,4 +1,5 @@
 const express = require('express')
+
 const app = express()
 const port =process.env.PORT|| 5000;
 const cors = require("cors");
@@ -11,6 +12,14 @@ async function run(){
 try{
     await client.connect();
     const EventsCollection = client.db("mussc").collection("events");
+      //all data
+      app.get("/events", async (req, res) => {
+        const q = req.query;
+        console.log(q);
+        const cursor = EventsCollection.find(q);
+        const result = await cursor.toArray();
+        res.send(result);
+      });
 
 }
 finally{
